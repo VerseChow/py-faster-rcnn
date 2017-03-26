@@ -75,7 +75,7 @@ class pascal_voc(imdb):
         Load the indexes listed in this dataset's image set file.
         """
         # Example path to image set file:
-        # self._devkit_path + /VOCdevkit2007/VOC2007/ImageSets/Main/val.txt
+        # self._devkit_path + /VOCdevkit2012/VOC2012/ImageSets/Main/val.txt
         image_set_file = os.path.join(self._data_path, 'ImageSets', 'Main',
                                       self._image_set + '.txt')
         assert os.path.exists(image_set_file), \
@@ -127,7 +127,7 @@ class pascal_voc(imdb):
             print '{} ss roidb loaded from {}'.format(self.name, cache_file)
             return roidb
 
-        if int(self._year) == 2007 or self._image_set != 'test':
+        if int(self._year) == 2012 or self._image_set != 'test':
             gt_roidb = self.gt_roidb()
             ss_roidb = self._load_selective_search_roidb(gt_roidb)
             roidb = imdb.merge_roidbs(gt_roidb, ss_roidb)
@@ -140,7 +140,7 @@ class pascal_voc(imdb):
         return roidb
 
     def rpn_roidb(self):
-        if int(self._year) == 2007 or self._image_set != 'test':
+        if int(self._year) == 2012 or self._image_set != 'test':
             gt_roidb = self.gt_roidb()
             rpn_roidb = self._load_rpn_roidb(gt_roidb)
             roidb = imdb.merge_roidbs(gt_roidb, rpn_roidb)
@@ -229,7 +229,7 @@ class pascal_voc(imdb):
         return comp_id
 
     def _get_voc_results_file_template(self):
-        # VOCdevkit/results/VOC2007/Main/<comp_id>_det_test_aeroplane.txt
+        # VOCdevkit/results/VOC2012/Main/<comp_id>_det_test_aeroplane.txt
         filename = self._get_comp_id() + '_det_' + self._image_set + '_{:s}.txt'
         path = os.path.join(
             self._devkit_path,
@@ -339,6 +339,6 @@ class pascal_voc(imdb):
 
 if __name__ == '__main__':
     from datasets.pascal_voc import pascal_voc
-    d = pascal_voc('trainval', '2007')
+    d = pascal_voc('trainval', '2012')
     res = d.roidb
     from IPython import embed; embed()

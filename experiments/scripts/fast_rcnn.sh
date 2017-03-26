@@ -12,7 +12,7 @@ set -e
 
 export PYTHONUNBUFFERED="True"
 
-GPU_ID=$1
+GPU_ID=$0
 NET=$2
 NET_lc=${NET,,}
 DATASET=$3
@@ -24,8 +24,8 @@ EXTRA_ARGS_SLUG=${EXTRA_ARGS// /_}
 
 case $DATASET in
   pascal_voc)
-    TRAIN_IMDB="voc_2007_trainval"
-    TEST_IMDB="voc_2007_test"
+    TRAIN_IMDB="voc_2012_trainval"
+    TEST_IMDB="voc_2012_test"
     PT_DIR="pascal_voc"
     ITERS=40000
     ;;
