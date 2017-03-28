@@ -1,0 +1,18 @@
+<annotation>
+  <folder>progress/obj9</folder>
+  <filename>obj9_tide_1_frame00018.jpg</filename>
+  <size>
+    <width>720</width>
+    <height>540</height>
+    <depth>3</depth>
+  </size>
+  <object>
+    <name>tide</name>
+    <bndbox>
+      <xmin>313</xmin>
+      <ymin>163</ymin>
+      <xmax>538</xmax>
+      <ymax>344</ymax>
+    </bndbox>
+  </object>
+</annotation>

@@ -1,0 +1,18 @@
+<annotation>
+  <folder>progress/obj11</folder>
+  <filename>obj11_downy_1_frame00009.jpg</filename>
+  <size>
+    <width>720</width>
+    <height>540</height>
+    <depth>3</depth>
+  </size>
+  <object>
+    <name>downy</name>
+    <bndbox>
+      <xmin>310</xmin>
+      <ymin>111</ymin>
+      <xmax>413</xmax>
+      <ymax>307</ymax>
+    </bndbox>
+  </object>
+</annotation>
