@@ -29,6 +29,12 @@ case $DATASET in
     PT_DIR="pascal_voc"
     ITERS=70000
     ;;
+  progress)
+    TRAIN_IMDB="progress_train"
+    TEST_IMDB="progess_test"
+    PT_DIR="progress"
+    ITERS=1000
+  ;;  
   coco)
     # This is a very long and slow training schedule
     # You can probably use fewer iterations and reduce the
@@ -50,7 +56,7 @@ echo Logging output to "$LOG"
 
 time ./tools/train_net.py --gpu ${GPU_ID} \
   --solver models/${PT_DIR}/${NET}/faster_rcnn_end2end/solver.prototxt \
-  --weights data/imagenet_models/${NET}.v2.caffemodel \
+  --weights data/faster_rcnn_models/${NET}_faster_rcnn_final.caffemodel \
   --imdb ${TRAIN_IMDB} \
   --iters ${ITERS} \
   --cfg experiments/cfgs/faster_rcnn_end2end.yml \
@@ -60,9 +66,9 @@ set +x
 NET_FINAL=`grep -B 1 "done solving" ${LOG} | grep "Wrote snapshot" | awk '{print $4}'`
 set -x
 
-time ./tools/test_net.py --gpu ${GPU_ID} \
-  --def models/${PT_DIR}/${NET}/faster_rcnn_end2end/test.prototxt \
-  --net ${NET_FINAL} \
-  --imdb ${TEST_IMDB} \
-  --cfg experiments/cfgs/faster_rcnn_end2end.yml \
-  ${EXTRA_ARGS}
+#time ./tools/test_net.py --gpu ${GPU_ID} \
+#  --def models/${PT_DIR}/${NET}/faster_rcnn_end2end/test.prototxt \
+#  --net ${NET_FINAL} \
+#  --imdb ${TEST_IMDB} \
+#  --cfg experiments/cfgs/faster_rcnn_end2end.yml \
+#  ${EXTRA_ARGS}

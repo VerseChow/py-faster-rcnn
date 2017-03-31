@@ -25,19 +25,15 @@ import caffe, os, sys, cv2
 import argparse
 
 CLASSES = ('__background__',
-           'aeroplane', 'bicycle', 'bird', 'boat',
-           'bottle', 'bus', 'car', 'cat', 'chair',
-           'cow', 'diningtable', 'dog', 'horse',
-           'motorbike', 'person', 'pottedplant',
-           'sheep', 'sofa', 'train', 'tvmonitor')
+           'tide','downy')
 
 NETS = {'vgg16': ('VGG16',
-                  'VGG16_faster_rcnn_final.caffemodel'),
+                  'vgg16_faster_rcnn_iter_1000.caffemodel'),
         'zf': ('ZF',
                   'ZF_faster_rcnn_final.caffemodel')}
 
 
-def vis_detections(im, class_name, dets, thresh=0.5):
+def vis_detections(im, class_name, dets, thresh=0.0):
     """Draw detected bounding boxes."""
     inds = np.where(dets[:, -1] >= thresh)[0]
     if len(inds) == 0:
@@ -85,8 +81,8 @@ def demo(net, image_name):
            '{:d} object proposals').format(timer.total_time, boxes.shape[0])
 
     # Visualize detections for each class
-    CONF_THRESH = 0.8
-    NMS_THRESH = 0.3
+    CONF_THRESH = 0.3
+    NMS_THRESH = 0.005
     for cls_ind, cls in enumerate(CLASSES[1:]):
         cls_ind += 1 # because we skipped background
         cls_boxes = boxes[:, 4*cls_ind:4*(cls_ind + 1)]
@@ -118,7 +114,7 @@ if __name__ == '__main__':
     args = parse_args()
 
     prototxt = os.path.join(cfg.MODELS_DIR, NETS[args.demo_net][0],
-                            'faster_rcnn_alt_opt', 'faster_rcnn_test.pt')
+                            'faster_rcnn_end2end', 'test.prototxt')
     caffemodel = os.path.join(cfg.DATA_DIR, 'faster_rcnn_models',
                               NETS[args.demo_net][1])
 

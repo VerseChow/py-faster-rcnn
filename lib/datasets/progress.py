@@ -19,17 +19,16 @@ import uuid
 from voc_eval import voc_eval
 from fast_rcnn.config import cfg
 
-class pascal_voc(imdb):
-    def __init__(self, image_set, year, devkit_path=None):
-        imdb.__init__(self, 'voc_' + year + '_' + image_set)
-        self._year = year
+class progress(imdb):
+    def __init__(self, image_set, devkit_path):
+        imdb.__init__(self, image_set)
+        
         self._image_set = image_set
         self._devkit_path = self._get_default_path() if devkit_path is None \
                             else devkit_path
-        self._data_path = os.path.join(self._devkit_path, 'VOC' + self._year)
+        self._data_path = os.path.join(self._devkit_path)
         self._classes = ('__background__', # always index 0
-                         'obj4', 'obj5', 'obj6', 'obj7', 'obj8', 'obj9', 'obj10',
-                         'obj11', 'obj12', 'obj13', 'obj14')
+                         'tide', 'downy')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
         self._image_ext = '.jpg'
         self._image_index = self._load_image_set_index()
@@ -47,7 +46,7 @@ class pascal_voc(imdb):
                        'min_size'    : 2}
 
         assert os.path.exists(self._devkit_path), \
-                'VOCdevkit path does not exist: {}'.format(self._devkit_path)
+                'progress path does not exist: {}'.format(self._devkit_path)
         assert os.path.exists(self._data_path), \
                 'Path does not exist: {}'.format(self._data_path)
 
@@ -100,7 +99,7 @@ class pascal_voc(imdb):
             print '{} gt roidb loaded from {}'.format(self.name, cache_file)
             return roidb
 
-        gt_roidb = [self._load_pascal_annotation(index)
+        gt_roidb = [self._load_progress_annotation(index)
                     for index in self.image_index]
         with open(cache_file, 'wb') as fid:
             cPickle.dump(gt_roidb, fid, cPickle.HIGHEST_PROTOCOL)
@@ -174,7 +173,7 @@ class pascal_voc(imdb):
 
         return self.create_roidb_from_box_list(box_list, gt_roidb)
 
-    def _load_pascal_annotation(self, index):
+    def _load_progress_annotation(self, index):
         """
         Load image and bounding boxes info from XML file in the PASCAL VOC
         format.
@@ -182,14 +181,7 @@ class pascal_voc(imdb):
         filename = os.path.join(self._data_path, 'Annotations', index + '.xml')
         tree = ET.parse(filename)
         objs = tree.findall('object')
-        if not self.config['use_diff']:
-            # Exclude the samples labeled as difficult
-            non_diff_objs = [
-                obj for obj in objs if int(obj.find('difficult').text) == 0]
-            # if len(non_diff_objs) != len(objs):
-            #     print 'Removed {} difficult objects'.format(
-            #         len(objs) - len(non_diff_objs))
-            objs = non_diff_objs
+        
         num_objs = len(objs)
 
         boxes = np.zeros((num_objs, 4), dtype=np.uint16)
